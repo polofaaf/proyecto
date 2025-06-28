@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atención al Cliente - Hotel System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏨 Hotel System</h1>
+            <p>Atención al Cliente - Tu opinión es importante</p>
+        </div>
+
+        <!-- Formulario de Comentario y Calificación -->
+        <div class="form-container" id="feedbackForm">
+            <div id="feedbackAlert" class="alert hidden"></div>
+            
+            <div class="form-group">
+                <label for="customerName">Nombre Completo</label>
+                <input type="text" id="customerName" placeholder="Ingresa tu nombre completo" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="customerEmail">Correo Electrónico</label>
+                <input type="email" id="customerEmail" placeholder="Ingresa tu correo" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Calificación del Hotel</label>
+                <div class="rating-container">
+                    <div class="stars">
+                        <i class="fas fa-star" data-rating="1"></i>
+                        <i class="fas fa-star" data-rating="2"></i>
+                        <i class="fas fa-star" data-rating="3"></i>
+                        <i class="fas fa-star" data-rating="4"></i>
+                        <i class="fas fa-star" data-rating="5"></i>
+                    </div>
+                    <span id="rating-text">Selecciona una calificación</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="customerComment">Comentario</label>
+                <textarea id="customerComment" placeholder="Cuéntanos tu experiencia en el hotel..." rows="5" required></textarea>
+            </div>
+            
+            <button class="btn btn-primary" onclick="submitFeedback()">Enviar Comentario</button>
+            
+            <div class="form-toggle">
+                <p><a href="usuarios.html">Volver al inicio</a></p>
+            </div>
+        </div>
+
+        <!-- Sección de Comentarios Existentes -->
+        <div class="form-container" id="existingFeedbacks">
+            <h3 style="text-align: center; margin-bottom: 20px; color: #667eea;">
+                <i class="fas fa-comments"></i> Comentarios de Otros Clientes
+            </h3>
+            <div id="feedbacksList">
+                <!-- Los comentarios se cargarán dinámicamente -->
+            </div>
+        </div>
+
+        <!-- Pantalla de Carga -->
+        <div class="form-container hidden" id="loadingScreen">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Enviando tu comentario...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="atencion-cliente.js"></script>
+</body>
+</html> 

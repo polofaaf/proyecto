@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Hotel - Inicio de Sesión</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏨 Hotel System</h1>
+            <p>Inicia sesión o regístrate para continuar</p>
+        </div>
+
+        <!-- Formulario de Inicio de Sesión -->
+        <div class="form-container" id="loginForm">
+            <div id="loginAlert" class="alert hidden"></div>
+            
+            <div class="form-group">
+                <label for="loginEmail">Correo Electrónico</label>
+                <input type="email" id="loginEmail" placeholder="Ingresa tu correo" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="loginPassword">Contraseña</label>
+                <div class="password-input-container">
+                    <input type="password" id="loginPassword" placeholder="Ingresa tu contraseña" required>
+                    <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="login()">Iniciar Sesión</button>
+            
+            <div class="form-toggle">
+                <p>¿No tienes cuenta? <a href="#" onclick="showRegisterForm()">Regístrate aquí</a></p>
+            </div>
+        </div>
+
+        <!-- Formulario de Registro -->
+        <div class="form-container hidden" id="registerForm">
+            <div id="registerAlert" class="alert hidden"></div>
+            
+            <div class="form-group">
+                <label for="registerName">Nombre Completo</label>
+                <input type="text" id="registerName" placeholder="Ingresa tu nombre completo" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="registerEmail">Correo Electrónico</label>
+                <input type="email" id="registerEmail" placeholder="Ingresa tu correo" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="registerPassword">Contraseña</label>
+                <div class="password-input-container">
+                    <input type="password" id="registerPassword" placeholder="Ingresa tu contraseña" required oninput="validatePassword()">
+                    <button type="button" class="password-toggle" onclick="togglePassword('registerPassword')">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+                <div id="password-strength" class="password-strength"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="registerConfirmPassword">Confirmar Contraseña</label>
+                <div class="password-input-container">
+                    <input type="password" id="registerConfirmPassword" placeholder="Confirma tu contraseña" required>
+                    <button type="button" class="password-toggle" onclick="togglePassword('registerConfirmPassword')">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="register()">Registrarse</button>
+            
+            <div class="form-toggle">
+                <p>¿Ya tienes cuenta? <a href="#" onclick="showLoginForm()">Inicia sesión aquí</a></p>
+            </div>
+        </div>
+
+        <!-- Pantalla de Carga -->
+        <div class="form-container hidden" id="loadingScreen">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Redirigiendo al inicio de sesión...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

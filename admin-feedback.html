@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Comentarios - Panel de Administración</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <div class="admin-header">
+        <div class="admin-nav">
+            <h1>🏨 Panel de Administración - Comentarios</h1>
+            <button onclick="window.location.href='admin.html'">Volver al Panel</button>
+        </div>
+    </div>
+
+    <div class="admin-panel">
+        <div class="admin-content">
+            <!-- Estadísticas de Feedback -->
+            <div class="feedback-stats" id="feedbackStats">
+                <div class="stat-card">
+                    <h3 id="totalFeedbacks">0</h3>
+                    <p>Total de Comentarios</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="averageRating">0.0</h3>
+                    <p>Calificación Promedio</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="fiveStarCount">0</h3>
+                    <p>5 Estrellas</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="recentFeedbacks">0</h3>
+                    <p>Últimos 7 días</p>
+                </div>
+            </div>
+
+            <!-- Filtros -->
+            <div class="admin-section">
+                <div class="admin-card">
+                    <h3><i class="fas fa-filter"></i> Filtros</h3>
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 15px;">
+                        <select id="ratingFilter" onchange="filterFeedbacks()">
+                            <option value="">Todas las calificaciones</option>
+                            <option value="5">5 estrellas</option>
+                            <option value="4">4 estrellas</option>
+                            <option value="3">3 estrellas</option>
+                            <option value="2">2 estrellas</option>
+                            <option value="1">1 estrella</option>
+                        </select>
+                        <select id="dateFilter" onchange="filterFeedbacks()">
+                            <option value="">Todas las fechas</option>
+                            <option value="today">Hoy</option>
+                            <option value="week">Última semana</option>
+                            <option value="month">Último mes</option>
+                        </select>
+                        <button class="btn btn-secondary" onclick="clearFilters()">Limpiar Filtros</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista de Comentarios -->
+            <div class="admin-section">
+                <div class="admin-card">
+                    <h3><i class="fas fa-comments"></i> Comentarios de Clientes</h3>
+                    <div id="feedbacksContainer">
+                        <p style="text-align: center; color: #666; padding: 40px;">Cargando comentarios...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para ver comentario completo -->
+    <div id="feedbackModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Detalles del Comentario</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Contenido del modal -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-delete" onclick="deleteFeedback()">Eliminar Comentario</button>
+                <button class="btn btn-secondary" onclick="closeModal()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin-feedback.js"></script>
+</body>
+</html> 

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de Compra - Sistema de Hotel</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .test-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .test-button {
+            background: #667eea;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .test-button:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+        
+        .test-button.success {
+            background: #28a745;
+        }
+        
+        .test-button.warning {
+            background: #ffc107;
+            color: #333;
+        }
+        
+        .status-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1 style="color: #667eea; margin-bottom: 30px;">
+            🏨 Prueba de Funcionalidad de Compra
+        </h1>
+        
+        <div class="status-info" id="statusInfo">
+            <h3>Estado del Sistema</h3>
+            <p>Cargando información...</p>
+        </div>
+        
+        <div style="margin: 30px 0;">
+            <h3>Funcionalidades de Compra</h3>
+            <p>El sistema permite a los usuarios comprar hasta 2 habitaciones</p>
+        </div>
+        
+        <div>
+            <button class="test-button" onclick="window.location.href='registro.html'">
+                <i class="fas fa-sign-in-alt"></i> Ir al Login
+            </button>
+            
+            <button class="test-button success" onclick="window.location.href='habitaciones.html'">
+                <i class="fas fa-bed"></i> Ver Habitaciones
+            </button>
+            
+            <button class="test-button warning" onclick="window.location.href='usuarios.html'">
+                <i class="fas fa-user"></i> Panel de Usuario
+            </button>
+        </div>
+        
+        <div style="margin-top: 30px;">
+            <button class="test-button" onclick="testPurchaseLimit()">
+                <i class="fas fa-chart-bar"></i> Ver Límite de Compras
+            </button>
+            
+            <button class="test-button warning" onclick="resetAllData()">
+                <i class="fas fa-trash"></i> Resetear Datos
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Función para mostrar el estado actual
+        function updateStatus() {
+            const reservations = JSON.parse(localStorage.getItem('reservations') || '[]');
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            
+            const userPurchases = reservations.filter(r => r.type === 'purchase');
+            const userReservations = reservations.filter(r => r.type === 'reservation');
+            
+            const statusDiv = document.getElementById('statusInfo');
+            
+            if (!currentUser) {
+                statusDiv.innerHTML = `
+                    <h3>Estado del Sistema</h3>
+                    <p style="color: #dc3545;"><strong>No hay usuario logueado</strong></p>
+                    <p>Debes iniciar sesión para probar las funcionalidades</p>
+                `;
+                return;
+            }
+            
+            statusDiv.innerHTML = `
+                <h3>Estado del Sistema</h3>
+                <p><strong>Usuario:</strong> ${currentUser.name}</p>
+                <p><strong>Email:</strong> ${currentUser.email}</p>
+                <hr style="margin: 15px 0;">
+                <p><strong>Compras:</strong> ${userPurchases.length}/2</p>
+                <p><strong>Reservas:</strong> ${userReservations.length}</p>
+                <div style="background: #e9ecef; height: 10px; border-radius: 5px; overflow: hidden; margin: 10px 0;">
+                    <div style="background: #667eea; height: 100%; width: ${(userPurchases.length / 2) * 100}%; transition: width 0.3s ease;"></div>
+                </div>
+                <p style="color: ${userPurchases.length >= 2 ? '#dc3545' : '#28a745'}; font-weight: 600;">
+                    ${userPurchases.length >= 2 ? 'Límite de compras alcanzado' : `Puedes comprar ${2 - userPurchases.length} habitación(es) más`}
+                </p>
+            `;
+        }
+        
+        // Función para probar límite de compras
+        function testPurchaseLimit() {
+            const reservations = JSON.parse(localStorage.getItem('reservations') || '[]');
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            
+            if (!currentUser) {
+                Swal.fire({
+                    title: 'Usuario No Logueado',
+                    text: 'Debes iniciar sesión para probar esta funcionalidad',
+                    icon: 'warning',
+                    confirmButtonText: 'Ir al Login'
+                }).then(() => {
+                    window.location.href = 'registro.html';
+                });
+                return;
+            }
+            
+            const userPurchases = reservations.filter(r => 
+                r.userId === currentUser.email && r.type === 'purchase'
+            );
+            
+            Swal.fire({
+                title: 'Estado de Compras',
+                html: `
+                    <div style="text-align: center;">
+                        <p><strong>Usuario:</strong> ${currentUser.name}</p>
+                        <p><strong>Compras realizadas:</strong> ${userPurchases.length}/2</p>
+                        <div style="background: #e9ecef; height: 20px; border-radius: 10px; overflow: hidden; margin: 15px 0;">
+                            <div style="background: #667eea; height: 100%; width: ${(userPurchases.length / 2) * 100}%; transition: width 0.3s ease;"></div>
+                        </div>
+                        <p style="color: ${userPurchases.length >= 2 ? '#dc3545' : '#28a745'}; font-weight: 600;">
+                            ${userPurchases.length >= 2 ? 'Límite alcanzado' : `Puedes comprar ${2 - userPurchases.length} habitación(es) más`}
+                        </p>
+                    </div>
+                `,
+                icon: 'info',
+                confirmButtonText: 'Entendido'
+            });
+        }
+        
+        // Función para resetear todos los datos
+        function resetAllData() {
+            Swal.fire({
+                title: '¿Resetear Todos los Datos?',
+                text: 'Esto eliminará todas las compras y reservas del usuario actual',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, Resetear',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const reservations = JSON.parse(localStorage.getItem('reservations') || '[]');
+                    const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+                    
+                    if (currentUser) {
+                        const filteredReservations = reservations.filter(r => r.userId !== currentUser.email);
+                        localStorage.setItem('reservations', JSON.stringify(filteredReservations));
+                    }
+                    
+                    Swal.fire({
+                        title: 'Datos Reseteados',
+                        text: 'Todas las compras y reservas han sido eliminadas',
+                        icon: 'success',
+                        confirmButtonText: 'Perfecto'
+                    });
+                    
+                    updateStatus();
+                }
+            });
+        }
+        
+        // Actualizar estado al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStatus();
+        });
+    </script>
+</body>
+</html> 

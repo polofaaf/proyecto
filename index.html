@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Hotel - Bienvenido</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .welcome-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .welcome-content {
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .welcome-title {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .welcome-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .welcome-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .feature {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .feature i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #ffd700;
+        }
+        
+        .btn-welcome {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+        
+        .btn-welcome:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .loading {
+            display: none;
+            margin-top: 1rem;
+        }
+        
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-container">
+        <div class="welcome-content">
+            <h1 class="welcome-title">🏨 Hotel System</h1>
+            <p class="welcome-subtitle">Tu sistema de gestión hotelera completo y moderno</p>
+            
+            <div class="welcome-features">
+                <div class="feature">
+                    <i class="fas fa-bed"></i>
+                    <h3>Habitaciones</h3>
+                    <p>Reserva y compra habitaciones con facilidad</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-credit-card"></i>
+                    <h3>Pagos Seguros</h3>
+                    <p>Múltiples métodos de pago disponibles</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-user-shield"></i>
+                    <h3>Panel de Usuario</h3>
+                    <p>Gestiona tus reservas y compras</p>
+                </div>
+            </div>
+            
+            <button class="btn-welcome" onclick="redirectToLogin()">
+                <i class="fas fa-sign-in-alt"></i> Comenzar
+            </button>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Redirigiendo...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function redirectToLogin() {
+            const btn = document.querySelector('.btn-welcome');
+            const loading = document.getElementById('loading');
+            
+            btn.style.display = 'none';
+            loading.style.display = 'block';
+            
+            setTimeout(() => {
+                window.location.href = 'registro.html';
+            }, 1000);
+        }
+        
+        // Auto-redirect after 5 seconds
+        setTimeout(() => {
+            redirectToLogin();
+        }, 5000);
+    </script>
+</body>
+</html> 

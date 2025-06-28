@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Habitaciones - Hotel Paradise</title>
+    <link rel="stylesheet" href="admin-habitaciones.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header de Administración -->
+    <header class="admin-header">
+        <nav class="admin-nav">
+            <h1><i class="fas fa-bed"></i> Gestión de Habitaciones</h1>
+            <div class="nav-buttons">
+                <button onclick="window.location.href='admin.html'" class="btn-nav">
+                    <i class="fas fa-arrow-left"></i> Volver al Panel
+                </button>
+                <button onclick="logout()" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Contenido Principal -->
+    <div class="admin-container">
+        <!-- Panel de Tipos de Habitación -->
+        <div class="room-types-panel">
+            <div class="panel-header">
+                <h2><i class="fas fa-layer-group"></i> Tipos de Habitación</h2>
+                <button onclick="showAddTypeModal()" class="btn-add">
+                    <i class="fas fa-plus"></i> Agregar Tipo
+                </button>
+            </div>
+            
+            <div class="room-types-grid" id="roomTypesGrid">
+                <!-- Los tipos se cargarán dinámicamente -->
+            </div>
+        </div>
+
+        <!-- Panel de Habitaciones -->
+        <div class="rooms-panel">
+            <div class="panel-header">
+                <h2><i class="fas fa-door-open"></i> Habitaciones</h2>
+                <div class="filter-controls">
+                    <select id="typeFilter" onchange="filterRooms()">
+                        <option value="">Todos los tipos</option>
+                    </select>
+                    <button onclick="showAddRoomModal()" class="btn-add">
+                        <i class="fas fa-plus"></i> Agregar Habitación
+                    </button>
+                </div>
+            </div>
+            
+            <div class="rooms-grid" id="roomsGrid">
+                <!-- Las habitaciones se cargarán dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Agregar/Editar Tipo de Habitación -->
+    <div id="typeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="typeModalTitle">Agregar Tipo de Habitación</h3>
+                <span class="close" onclick="closeTypeModal()">&times;</span>
+            </div>
+            <form id="typeForm" onsubmit="saveRoomType(event)">
+                <div class="form-group">
+                    <label for="typeName">Nombre del Tipo:</label>
+                    <input type="text" id="typeName" required placeholder="Ej: Presidencial, Estándar, Suite">
+                </div>
+                <div class="form-actions">
+                    <button type="button" onclick="closeTypeModal()" class="btn-cancel">Cancelar</button>
+                    <button type="submit" class="btn-save">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para Agregar/Editar Habitación -->
+    <div id="roomModal" class="modal">
+        <div class="modal-content large-modal">
+            <div class="modal-header">
+                <h3 id="roomModalTitle">Agregar Habitación</h3>
+                <span class="close" onclick="closeRoomModal()">&times;</span>
+            </div>
+            <form id="roomForm" onsubmit="saveRoom(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="roomName">Nombre de la Habitación:</label>
+                        <input type="text" id="roomName" required placeholder="Ej: Suite Presidencial, Habitación Deluxe">
+                    </div>
+                    <div class="form-group">
+                        <label for="roomNumber">Número de Habitación:</label>
+                        <input type="number" id="roomNumber" required min="1" placeholder="101">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="roomType">Tipo de Habitación:</label>
+                        <select id="roomType" required onchange="updateRoomFeatures()">
+                            <option value="">Seleccionar tipo</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="roomPrice">Precio por Noche (MXN):</label>
+                        <input type="number" id="roomPrice" required min="0" placeholder="0">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="roomDescription">Descripción:</label>
+                    <textarea id="roomDescription" required placeholder="Descripción de la habitación"></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="roomFloor">Piso:</label>
+                        <input type="number" id="roomFloor" min="1" placeholder="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="roomCapacity">Capacidad (personas):</label>
+                        <input type="number" id="roomCapacity" min="1" value="2" placeholder="2">
+                    </div>
+                </div>
+
+                <!-- Características de la Habitación -->
+                <div class="features-section">
+                    <h4><i class="fas fa-cogs"></i> Características de la Habitación</h4>
+                    
+                    <div class="features-grid">
+                        <div class="feature-group">
+                            <label for="roomBathrooms">Baños:</label>
+                            <input type="number" id="roomBathrooms" min="0" value="1" placeholder="1">
+                        </div>
+                        
+                        <div class="feature-group">
+                            <label for="roomBeds">Camas:</label>
+                            <input type="number" id="roomBeds" min="1" value="1" placeholder="1">
+                        </div>
+                        
+                        <div class="feature-group">
+                            <label for="roomCapacity">Capacidad (personas):</label>
+                            <input type="number" id="roomCapacity" min="1" value="2" placeholder="2">
+                        </div>
+                    </div>
+
+                    <div class="amenities-section">
+                        <h5>Amenidades:</h5>
+                        <div class="amenities-grid">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="hasWifi">
+                                <span class="checkmark"></span>
+                                <i class="fas fa-wifi"></i> WiFi
+                            </label>
+                            
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="hasTV">
+                                <span class="checkmark"></span>
+                                <i class="fas fa-tv"></i> TV
+                            </label>
+                            
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="hasAC">
+                                <span class="checkmark"></span>
+                                <i class="fas fa-snowflake"></i> Aire Acondicionado
+                            </label>
+                            
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="hasPool">
+                                <span class="checkmark"></span>
+                                <i class="fas fa-swimming-pool"></i> Piscina
+                            </label>
+                            
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="hasBalcony">
+                                <span class="checkmark"></span>
+                                <i class="fas fa-door-open"></i> Balcón
+                            </label>
+                            
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="hasJacuzzi">
+                                <span class="checkmark"></span>
+                                <i class="fas fa-hot-tub"></i> Jacuzzi
+                            </label>
+                            
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="hasKitchen">
+                                <span class="checkmark"></span>
+                                <i class="fas fa-utensils"></i> Cocina
+                            </label>
+                            
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="hasMinibar">
+                                <span class="checkmark"></span>
+                                <i class="fas fa-wine-bottle"></i> Minibar
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="view-section">
+                        <h5>Vista:</h5>
+                        <div class="view-options">
+                            <label class="radio-label">
+                                <input type="radio" name="roomView" value="city" checked>
+                                <span class="radiomark"></span>
+                                <i class="fas fa-city"></i> Vista a la Ciudad
+                            </label>
+                            
+                            <label class="radio-label">
+                                <input type="radio" name="roomView" value="ocean">
+                                <span class="radiomark"></span>
+                                <i class="fas fa-water"></i> Vista al Océano
+                            </label>
+                            
+                            <label class="radio-label">
+                                <input type="radio" name="roomView" value="mountain">
+                                <span class="radiomark"></span>
+                                <i class="fas fa-mountain"></i> Vista a la Montaña
+                            </label>
+                            
+                            <label class="radio-label">
+                                <input type="radio" name="roomView" value="garden">
+                                <span class="radiomark"></span>
+                                <i class="fas fa-seedling"></i> Vista al Jardín
+                            </label>
+                            
+                            <label class="radio-label">
+                                <input type="radio" name="roomView" value="none">
+                                <span class="radiomark"></span>
+                                <i class="fas fa-times"></i> Sin Vista Especial
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="decoration-section">
+                        <h5>Decoración:</h5>
+                        <div class="decoration-options">
+                            <label class="radio-label">
+                                <input type="radio" name="roomDecoration" value="modern" checked>
+                                <span class="radiomark"></span>
+                                <i class="fas fa-cube"></i> Moderna
+                            </label>
+                            
+                            <label class="radio-label">
+                                <input type="radio" name="roomDecoration" value="classic">
+                                <span class="radiomark"></span>
+                                <i class="fas fa-crown"></i> Clásica
+                            </label>
+                            
+                            <label class="radio-label">
+                                <input type="radio" name="roomDecoration" value="rustic">
+                                <span class="radiomark"></span>
+                                <i class="fas fa-tree"></i> Rústica
+                            </label>
+                            
+                            <label class="radio-label">
+                                <input type="radio" name="roomDecoration" value="luxury">
+                                <span class="radiomark"></span>
+                                <i class="fas fa-gem"></i> Lujo
+                            </label>
+                            
+                            <label class="radio-label">
+                                <input type="radio" name="roomDecoration" value="minimalist">
+                                <span class="radiomark"></span>
+                                <i class="fas fa-minus"></i> Minimalista
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" onclick="closeRoomModal()" class="btn-cancel">Cancelar</button>
+                    <button type="submit" class="btn-save">Guardar Habitación</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="admin-habitaciones.js"></script>
+</body>
+</html> 

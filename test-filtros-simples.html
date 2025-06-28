@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de Filtros Simplificados - Sistema de Hotel</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .test-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .test-button {
+            background: #667eea;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .test-button:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+        
+        .test-button.success {
+            background: #28a745;
+        }
+        
+        .status-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1 style="color: #667eea; margin-bottom: 30px;">
+            🧪 Prueba de Filtros Simplificados
+        </h1>
+        
+        <div class="status-info">
+            <h3>Filtros Eliminados</h3>
+            <p>Se han eliminado los siguientes filtros:</p>
+            <ul style="text-align: left; margin: 15px 0;">
+                <li>❌ Rango de Precio</li>
+                <li>❌ Capacidad Mínima</li>
+                <li>❌ Amenidades Específicas</li>
+            </ul>
+            <p><strong>Filtros que permanecen:</strong></p>
+            <ul style="text-align: left; margin: 15px 0;">
+                <li>✅ Búsqueda por texto</li>
+                <li>✅ Filtro por tipo de habitación</li>
+            </ul>
+        </div>
+        
+        <div style="margin: 30px 0;">
+            <h3>Funcionalidades Simplificadas</h3>
+            <p>La interfaz ahora es más simple y fácil de usar</p>
+        </div>
+        
+        <div>
+            <button class="test-button" onclick="window.location.href='registro.html'">
+                <i class="fas fa-sign-in-alt"></i> Ir al Login
+            </button>
+            
+            <button class="test-button success" onclick="window.location.href='habitaciones.html'">
+                <i class="fas fa-bed"></i> Ver Habitaciones
+            </button>
+            
+            <button class="test-button" onclick="testFiltros()">
+                <i class="fas fa-search"></i> Probar Filtros
+            </button>
+        </div>
+        
+        <div style="margin-top: 30px;">
+            <h4>Cambios Realizados:</h4>
+            <div style="text-align: left; background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                <p><strong>habitaciones.html:</strong></p>
+                <ul>
+                    <li>Eliminados filtros de precio, capacidad y amenidades</li>
+                    <li>Mantenida búsqueda por texto y filtro por tipo</li>
+                </ul>
+                
+                <p><strong>habitaciones.js:</strong></p>
+                <ul>
+                    <li>Simplificada función searchRooms()</li>
+                    <li>Actualizada función showFilterHelp()</li>
+                    <li>Simplificada función clearFilters()</li>
+                    <li>Eliminadas funciones innecesarias</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Función para probar los filtros simplificados
+        function testFiltros() {
+            Swal.fire({
+                title: 'Filtros Simplificados',
+                html: `
+                    <div style="text-align: center;">
+                        <p><strong>Filtros disponibles:</strong></p>
+                        <ul style="text-align: left; margin: 15px 0;">
+                            <li>🔍 <strong>Búsqueda por texto:</strong> Busca por nombre o descripción</li>
+                            <li>🏠 <strong>Filtro por tipo:</strong> Individual, Doble, Suite, etc.</li>
+                        </ul>
+                        <p style="color: #667eea; margin-top: 15px;">
+                            La interfaz es ahora más limpia y fácil de usar
+                        </p>
+                    </div>
+                `,
+                icon: 'info',
+                confirmButtonText: 'Entendido',
+                confirmButtonColor: '#667eea'
+            });
+        }
+    </script>
+</body>
+</html> 
